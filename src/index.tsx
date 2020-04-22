@@ -7,7 +7,7 @@ import Canvas from './components/canvas/Canvas';
 
 ReactDOM.render(
 	<div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-		<Canvas canvasWidth={16} canvasHeight={16} border />
+		<Canvas canvasWidth={64} canvasHeight={64} border />
 	</div>,
 	document.querySelector('.root'),
 );

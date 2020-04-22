@@ -18,6 +18,7 @@ const Canvas: React.FC<Props> = (props) => {
 
 	const [size] = React.useState(1);
 	const [color] = React.useState('#000000');
+	const [mouseHold, setMouseHold] = React.useState<boolean>(false);
 	const renderer = useRenderer();
 
 	const canvas = React.useRef<HTMLCanvasElement>(null);
@@ -32,13 +33,20 @@ const Canvas: React.FC<Props> = (props) => {
 	const draw = React.useCallback(
 		(event: React.MouseEvent) => {
 			if (renderer && canvas.current) {
+				event.persist();
 				const { clientX, clientY } = event;
-				const [x, y] = screenToCanvas(clientX, clientY, canvas.current);
+				const [x, y] = screenToCanvas(clientX, clientY, canvas.current!);
 				drawPixel(renderer, x, y, color, size);
+				toggleMouseHold();
 			}
 		},
 		[renderer, canvas.current, size, color],
 	);
+
+	const drawWhileMoveing = React.useCallback((evt: React.MouseEvent) => mouseHold && draw(evt), [
+		mouseHold,
+	]);
+	const toggleMouseHold = React.useCallback(() => setMouseHold(!mouseHold), [mouseHold]);
 
 	return (
 		<div
@@ -49,7 +57,12 @@ const Canvas: React.FC<Props> = (props) => {
 			}}
 			className='canvas-container'
 		>
-			<canvas ref={canvas} onClick={draw}></canvas>
+			<canvas
+				ref={canvas}
+				onMouseMove={drawWhileMoveing}
+				onMouseUp={toggleMouseHold}
+				onMouseDown={draw}
+			></canvas>
 		</div>
 	);
 };
