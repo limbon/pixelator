@@ -3,4 +3,11 @@ import * as ReactDOM from 'react-dom';
 
 import './index.scss';
 
-ReactDOM.render(<h1>Hello, World</h1>, document.querySelector('.root'));
+import Canvas from './components/canvas/Canvas';
+
+ReactDOM.render(
+	<div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+		<Canvas width={32} height={32} border />
+	</div>,
+	document.querySelector('.root'),
+);
