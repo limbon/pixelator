@@ -1,4 +1,9 @@
 import * as React from 'react';
+import { useRenderer } from '../../hooks/useRenderer';
+import { drawPixel } from '../../utils/drawPixel';
+import { screenToCanvas } from '../../utils/screenToCanvas';
+
+import './Canvas.scss';
 
 interface Props {
 	containerWidth?: number;
@@ -11,6 +16,10 @@ interface Props {
 const Canvas: React.FC<Props> = (props) => {
 	const { containerWidth, containerHeight, canvasWidth, canvasHeight, border } = props;
 
+	const [size] = React.useState(1);
+	const [color] = React.useState('#000000');
+	const renderer = useRenderer();
+
 	const canvas = React.useRef<HTMLCanvasElement>(null);
 
 	React.useEffect(() => {
@@ -19,6 +28,17 @@ const Canvas: React.FC<Props> = (props) => {
 			canvas.current.height = canvasHeight as number;
 		}
 	}, [canvas.current]);
+
+	const draw = React.useCallback(
+		(event: React.MouseEvent) => {
+			if (renderer && canvas.current) {
+				const { clientX, clientY } = event;
+				const [x, y] = screenToCanvas(clientX, clientY, canvas.current);
+				drawPixel(renderer, x, y, color, size);
+			}
+		},
+		[renderer, canvas.current, size, color],
+	);
 
 	return (
 		<div
@@ -29,7 +49,7 @@ const Canvas: React.FC<Props> = (props) => {
 			}}
 			className='canvas-container'
 		>
-			<canvas ref={canvas}></canvas>
+			<canvas ref={canvas} onClick={draw}></canvas>
 		</div>
 	);
 };
