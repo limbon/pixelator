@@ -5,7 +5,7 @@ const IS_DEV = process.env.NODE_ENV;
 
 module.exports = {
 	mode: IS_DEV,
-	entry: path.join(__dirname, 'src', 'index.jsx'),
+	entry: path.join(__dirname, 'src', 'index.tsx'),
 	output: {
 		path: path.join(__dirname, 'dist'),
 		publicPath: '/',
@@ -15,11 +15,19 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /.jsx?$/,
+				test: /.ts$/,
 				exclude: [path.resolve(__dirname, 'node_modules')],
 				loader: 'babel-loader',
 				query: {
-					presets: ['@babel/env', '@babel/preset-react'],
+					presets: ['@babel/env', '@babel/preset-typescript'],
+				},
+			},
+			{
+				test: /.tsx$/,
+				exclude: [path.resolve(__dirname, 'node_modules')],
+				loader: 'babel-loader',
+				query: {
+					presets: ['@babel/env', '@babel/preset-react', '@babel/preset-typescript'],
 				},
 			},
 			{
@@ -29,7 +37,7 @@ module.exports = {
 		],
 	},
 	resolve: {
-		extensions: ['.json', '.js', '.jsx'],
+		extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'],
 	},
 	plugins: [new HTMLPlugin({ template: path.join(__dirname, 'public', 'index.html') })],
 	devtool: 'source-map',
