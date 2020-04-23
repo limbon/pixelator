@@ -20,6 +20,10 @@ module.exports = {
 				loader: 'babel-loader',
 				query: {
 					presets: ['@babel/env', '@babel/preset-typescript'],
+					plugins: [
+						['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
+						'@babel/plugin-proposal-class-properties',
+					],
 				},
 			},
 			{
@@ -28,6 +32,7 @@ module.exports = {
 				loader: 'babel-loader',
 				query: {
 					presets: ['@babel/env', '@babel/preset-react', '@babel/preset-typescript'],
+					plugins: ['@babel/plugin-proposal-class-properties'],
 				},
 			},
 			{
