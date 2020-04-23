@@ -19,6 +19,8 @@ const Canvas: React.FC<Props> = (props) => {
 	const [size] = React.useState(1);
 	const [color] = React.useState('#000000');
 	const [mouseHold, setMouseHold] = React.useState<boolean>(false);
+	const [currentMousePos, setCurrentMousePos] = React.useState<number[]>([0, 0]);
+	const [lastMousePos, setLastMousePos] = React.useState<number[]>([0, 0]);
 	const renderer = useRenderer();
 
 	const canvas = React.useRef<HTMLCanvasElement>(null);
@@ -30,23 +32,91 @@ const Canvas: React.FC<Props> = (props) => {
 		}
 	}, [canvas.current]);
 
-	const draw = React.useCallback(
+	React.useEffect(() => {
+		if (mouseHold && renderer) {
+			drawBresenham();
+		}
+	}, [mouseHold, renderer, currentMousePos, lastMousePos, renderer]);
+
+	const handleRightClick = React.useCallback(
 		(event: React.MouseEvent) => {
-			if (renderer && canvas.current) {
-				event.persist();
+			if (canvas.current && renderer) {
 				const { clientX, clientY } = event;
 				const [x, y] = screenToCanvas(clientX, clientY, canvas.current!);
+				setLastMousePos([x, y]);
 				drawPixel(renderer, x, y, color, size);
-				toggleMouseHold();
+				setMouseHold(true);
 			}
 		},
-		[renderer, canvas.current, size, color],
+		[canvas.current, currentMousePos, renderer],
 	);
 
-	const drawWhileMoveing = React.useCallback((evt: React.MouseEvent) => mouseHold && draw(evt), [
-		mouseHold,
-	]);
-	const toggleMouseHold = React.useCallback(() => setMouseHold(!mouseHold), [mouseHold]);
+	const handleMouseMove = React.useCallback(
+		(event: React.MouseEvent) => {
+			if (canvas.current) {
+				const { clientX, clientY } = event;
+				const [x, y] = screenToCanvas(clientX, clientY, canvas.current!);
+				setCurrentMousePos([x, y]);
+			}
+		},
+		[canvas.current],
+	);
+
+	const drawBresenham = () => {
+		let x1 = currentMousePos[0],
+			x2 = lastMousePos[0],
+			y1 = currentMousePos[1],
+			y2 = lastMousePos[1];
+
+		let steep = Math.abs(y2 - y1) >= Math.abs(x2 - x1);
+		if (steep) {
+			let y = y2;
+			y2 = x2;
+			x2 = y;
+
+			let x = x1;
+			x1 = y1;
+			y1 = x;
+		}
+		if (x1 > x2) {
+			let x = x1;
+			x1 = x2;
+			x2 = x;
+
+			let y = y1;
+			y1 = y2;
+			y2 = y;
+		}
+
+		let dx = x2 - x1,
+			dy = Math.abs(y2 - y1),
+			error = 0,
+			de = dy / dx,
+			yStep = -1,
+			y = y1;
+
+		if (y1 <= y2) {
+			yStep = 1;
+		}
+
+		for (let x = x1; x <= x2; x++) {
+			if (steep) {
+				drawPixel(renderer!, y, x, color, size);
+			} else {
+				drawPixel(renderer!, x, y, color, size);
+			}
+			error += de;
+			if (error >= 0.5) {
+				y += yStep;
+				error -= 1.0;
+			}
+		}
+		setLastMousePos(currentMousePos);
+	};
+
+	const toggleMouseHold = React.useCallback(() => {
+		setMouseHold(false);
+	}, [mouseHold]);
 
 	return (
 		<div
@@ -59,9 +129,9 @@ const Canvas: React.FC<Props> = (props) => {
 		>
 			<canvas
 				ref={canvas}
-				onMouseMove={drawWhileMoveing}
+				onMouseMove={handleMouseMove}
 				onMouseUp={toggleMouseHold}
-				onMouseDown={draw}
+				onMouseDown={handleRightClick}
 			></canvas>
 		</div>
 	);
