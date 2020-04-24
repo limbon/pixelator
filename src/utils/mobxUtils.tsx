@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { IReactComponent } from 'mobx-react/dist/types/IReactComponent';
 import { Provider as MobxProvider, observer, inject as mobxInject } from 'mobx-react';
+import { ToolStore } from '../store/ToolStore';
 
-export type Stores = {};
+export type Stores = {
+	toolStore: ToolStore;
+};
 
 export const Provider: React.FC<{ stores?: Stores }> = ({ stores, children }) => {
 	return <MobxProvider {...stores}>{children}</MobxProvider>;

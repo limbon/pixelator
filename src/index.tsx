@@ -4,12 +4,18 @@ import * as ReactDOM from 'react-dom';
 
 import { Provider } from './utils/mobxUtils';
 
+import { ToolStore } from './store/ToolStore';
+
 import './index.scss';
 
 import Canvas from './components/canvas/Canvas';
 
 ReactDOM.render(
-	<Provider stores={{}}>
+	<Provider
+		stores={{
+			toolStore: new ToolStore(),
+		}}
+	>
 		<div
 			style={{
 				height: '100vh',
