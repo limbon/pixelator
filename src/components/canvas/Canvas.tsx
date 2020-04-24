@@ -11,8 +11,17 @@ interface Props {
 	border?: boolean;
 }
 
-const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore', Props>> = (props) => {
-	const { containerWidth, containerHeight, border, toolStore, canvasStore } = props;
+const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore' | 'palleteStore', Props>> = (
+	props,
+) => {
+	const {
+		containerWidth,
+		containerHeight,
+		border,
+		toolStore,
+		canvasStore,
+		palleteStore,
+	} = props;
 
 	const [mouseHold, setMouseHold] = React.useState<boolean>(false);
 	const [currentMousePos, setCurrentMousePos] = React.useState<number[]>([0, 0]);
@@ -33,7 +42,7 @@ const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore', Props>> = (props) 
 			const lastPos = toolStore.selectedTool.activate(
 				renderer,
 				currentMousePos,
-				canvasStore.color,
+				palleteStore.primaryColor,
 				canvasStore.size,
 				lastMousePos,
 			);
@@ -93,4 +102,4 @@ Canvas.defaultProps = {
 	border: false,
 };
 
-export default inject(['toolStore', 'canvasStore'], Canvas);
+export default inject(['toolStore', 'canvasStore', 'palleteStore'], Canvas);

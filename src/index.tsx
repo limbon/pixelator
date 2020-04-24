@@ -10,13 +10,18 @@ import './index.scss';
 
 import Canvas from './components/canvas/Canvas';
 import ToolRack from './components/ToolRack/ToolRack';
+
 import { CanvasStore } from './store/CanvasStore';
+import { PalleteStore } from './store/PalleteStore';
+
+import Pallete from './components/Pallete/Pallete';
 
 ReactDOM.render(
 	<Provider
 		stores={{
 			toolStore: new ToolStore(),
 			canvasStore: new CanvasStore(),
+			palleteStore: new PalleteStore(),
 		}}
 	>
 		<div
@@ -29,7 +34,17 @@ ReactDOM.render(
 				gap: '1rem',
 			}}
 		>
-			<ToolRack />
+			<div
+				style={{
+					height: '512px',
+					display: 'grid',
+					gridTemplateRows: '1fr auto',
+					gap: '1rem',
+				}}
+			>
+				<ToolRack />
+				<Pallete />
+			</div>
 			<Canvas border />
 		</div>
 	</Provider>,

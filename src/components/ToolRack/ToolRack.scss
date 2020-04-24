@@ -1,7 +1,7 @@
 $tool-height: 64px;
 
 .toolrack {
-	height: 512px;
+	height: 100%;
 	display: grid;
 	grid-template-columns: repeat(2, $tool-height);
 	gap: 1rem;
