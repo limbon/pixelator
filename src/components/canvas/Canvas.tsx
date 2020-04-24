@@ -8,23 +8,12 @@ import { inject, WithStore } from '../../utils/mobxUtils';
 interface Props {
 	containerWidth?: number;
 	containerHeight?: number;
-	canvasWidth?: number;
-	canvasHeight?: number;
 	border?: boolean;
 }
 
-const Canvas: React.FC<WithStore<'toolStore', Props>> = (props) => {
-	const {
-		containerWidth,
-		containerHeight,
-		canvasWidth,
-		canvasHeight,
-		border,
-		toolStore,
-	} = props;
+const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore', Props>> = (props) => {
+	const { containerWidth, containerHeight, border, toolStore, canvasStore } = props;
 
-	const [size] = React.useState(1);
-	const [color] = React.useState('#000000');
 	const [mouseHold, setMouseHold] = React.useState<boolean>(false);
 	const [currentMousePos, setCurrentMousePos] = React.useState<number[]>([0, 0]);
 	const [lastMousePos, setLastMousePos] = React.useState<number[]>([0, 0]);
@@ -34,8 +23,8 @@ const Canvas: React.FC<WithStore<'toolStore', Props>> = (props) => {
 
 	React.useEffect(() => {
 		if (canvas.current) {
-			canvas.current.width = canvasWidth as number;
-			canvas.current.height = canvasHeight as number;
+			canvas.current.width = canvasStore.width;
+			canvas.current.height = canvasStore.height;
 		}
 	}, [canvas.current]);
 
@@ -44,8 +33,8 @@ const Canvas: React.FC<WithStore<'toolStore', Props>> = (props) => {
 			const lastPos = toolStore.selectedTool.activate(
 				renderer,
 				currentMousePos,
-				color,
-				size,
+				canvasStore.color,
+				canvasStore.size,
 				lastMousePos,
 			);
 			if (lastPos) {
@@ -101,9 +90,7 @@ const Canvas: React.FC<WithStore<'toolStore', Props>> = (props) => {
 Canvas.defaultProps = {
 	containerWidth: 512,
 	containerHeight: 512,
-	canvasWidth: 512,
-	canvasHeight: 512,
 	border: false,
 };
 
-export default inject(['toolStore'], Canvas);
+export default inject(['toolStore', 'canvasStore'], Canvas);

@@ -10,11 +10,13 @@ import './index.scss';
 
 import Canvas from './components/canvas/Canvas';
 import ToolRack from './components/ToolRack/ToolRack';
+import { CanvasStore } from './store/CanvasStore';
 
 ReactDOM.render(
 	<Provider
 		stores={{
 			toolStore: new ToolStore(),
+			canvasStore: new CanvasStore(),
 		}}
 	>
 		<div
@@ -28,7 +30,7 @@ ReactDOM.render(
 			}}
 		>
 			<ToolRack />
-			<Canvas canvasWidth={64} canvasHeight={64} border />
+			<Canvas border />
 		</div>
 	</Provider>,
 	document.querySelector('.root'),
