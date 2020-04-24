@@ -9,6 +9,7 @@ import { ToolStore } from './store/ToolStore';
 import './index.scss';
 
 import Canvas from './components/canvas/Canvas';
+import ToolRack from './components/ToolRack/ToolRack';
 
 ReactDOM.render(
 	<Provider
@@ -19,11 +20,14 @@ ReactDOM.render(
 		<div
 			style={{
 				height: '100vh',
-				display: 'flex',
-				justifyContent: 'center',
+				display: 'grid',
+				gridAutoFlow: 'column',
 				alignItems: 'center',
+				justifyContent: 'center',
+				gap: '1rem',
 			}}
 		>
+			<ToolRack />
 			<Canvas canvasWidth={64} canvasHeight={64} border />
 		</div>
 	</Provider>,

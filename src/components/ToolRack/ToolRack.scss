@@ -1,0 +1,29 @@
+$tool-height: 64px;
+
+.toolrack {
+	height: 512px;
+	display: grid;
+	grid-template-columns: repeat(2, $tool-height);
+	gap: 1rem;
+	padding: 1rem;
+	border: 2px solid black;
+
+	&__tool {
+		width: 100%;
+		height: $tool-height;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border: 2px solid black;
+		cursor: pointer;
+
+		&:not(.active):hover {
+			background-color: lightgrey;
+		}
+
+		&.active {
+			background-color: grey;
+			color: white;
+		}
+	}
+}
