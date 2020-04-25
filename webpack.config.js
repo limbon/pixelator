@@ -23,6 +23,7 @@ module.exports = {
 					plugins: [
 						['@babel/plugin-proposal-decorators', { legacy: true }],
 						['@babel/plugin-proposal-class-properties', { loose: true }],
+						['@babel/plugin-transform-runtime', { regenerator: true }],
 					],
 				},
 			},
@@ -32,7 +33,10 @@ module.exports = {
 				loader: 'babel-loader',
 				query: {
 					presets: ['@babel/env', '@babel/preset-react', '@babel/preset-typescript'],
-					plugins: ['@babel/plugin-proposal-class-properties'],
+					plugins: [
+						'@babel/plugin-proposal-class-properties',
+						['@babel/plugin-transform-runtime', { regenerator: true }],
+					],
 				},
 			},
 			{
