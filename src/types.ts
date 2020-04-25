@@ -4,7 +4,7 @@ export type Tool = {
 	activate: (
 		renderer: CanvasRenderingContext2D,
 		currentMousePos: number[],
-		color: string,
+		color: Uint8ClampedArray,
 		size: number,
 		lastMousePos: number[],
 		canvas: HTMLCanvasElement,

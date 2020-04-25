@@ -1,8 +1,9 @@
 import { observable, action } from 'mobx';
+import { makeColor } from '../utils/makeColor';
 
 export class PalleteStore {
-	@observable primaryColor = '#000000';
-	@observable secondaryColor = '#ff0000';
+	@observable primaryColor = makeColor(0, 0, 0, 255);
+	@observable secondaryColor = makeColor(255, 0, 0, 255);
 
 	@action
 	swapColors() {
@@ -12,12 +13,12 @@ export class PalleteStore {
 	}
 
 	@action
-	setPrimaryColor(color: string) {
+	setPrimaryColor(color: Uint8ClampedArray) {
 		this.primaryColor = color;
 	}
 
 	@action
-	setSecondaryColor(color: string) {
+	setSecondaryColor(color: Uint8ClampedArray) {
 		this.secondaryColor = color;
 	}
 }

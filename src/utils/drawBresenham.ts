@@ -4,7 +4,7 @@ export const drawBresenham = (
 	renderer: CanvasRenderingContext2D,
 	currentMousePos: number[],
 	lastMousePos: number[],
-	color: string,
+	color: Uint8ClampedArray,
 	size: number,
 ) => {
 	let x1 = currentMousePos[0],

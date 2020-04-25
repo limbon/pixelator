@@ -4,6 +4,5 @@ const decToHex = (n: number) => {
 };
 
 export const rgbToHex = (rgb: Uint8ClampedArray) => {
-	// TODO: Add alpha support
 	return `#${decToHex(rgb[0])}${decToHex(rgb[1])}${decToHex(rgb[2])}`;
 };

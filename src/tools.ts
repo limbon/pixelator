@@ -1,6 +1,5 @@
 import { Tool } from './types';
 import { drawBresenham } from './utils/drawBresenham';
-import { getPixel } from './utils/getPixel';
 import { fillArea } from './utils/fillArea';
 
 export const pencil: Tool = {

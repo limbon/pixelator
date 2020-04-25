@@ -4,6 +4,8 @@ import { inject, WithStore } from '../../utils/mobxUtils';
 import SwitchColor from './arrow.svg';
 
 import './Pallete.scss';
+import { rgbToHex } from '../../utils/rgbToHex';
+import { hexToRgb } from '../../utils/hexToRgb';
 
 interface Props {}
 
@@ -15,8 +17,8 @@ const Pallete: React.FC<WithStore<'palleteStore', Props>> = ({ palleteStore }) =
 		if (pColorRef.current && sColorRef.current) {
 			// TODO: Is there another way to deal with it?
 			palleteStore.swapColors();
-			pColorRef.current.value = palleteStore.primaryColor;
-			sColorRef.current.value = palleteStore.secondaryColor;
+			pColorRef.current.value = rgbToHex(palleteStore.primaryColor);
+			sColorRef.current.value = rgbToHex(palleteStore.secondaryColor);
 		}
 	}, [pColorRef.current, sColorRef.current]);
 
@@ -30,16 +32,18 @@ const Pallete: React.FC<WithStore<'palleteStore', Props>> = ({ palleteStore }) =
 					<input
 						type='color'
 						ref={pColorRef}
-						onChange={(evt) => palleteStore.setPrimaryColor(evt.target.value)}
-						defaultValue={palleteStore.primaryColor}
+						onChange={(evt) => palleteStore.setPrimaryColor(hexToRgb(`${evt.target.value}ff`))}
+						defaultValue={rgbToHex(palleteStore.primaryColor)}
 					/>
 				</div>
 				<div className={`pallete__color`}>
 					<input
 						type='color'
 						ref={sColorRef}
-						onChange={(evt) => palleteStore.setSecondaryColor(evt.target.value)}
-						defaultValue={palleteStore.secondaryColor}
+						onChange={(evt) =>
+							palleteStore.setSecondaryColor(hexToRgb(`${evt.target.value}ff`))
+						}
+						defaultValue={rgbToHex(palleteStore.secondaryColor)}
 					/>
 				</div>
 			</div>
