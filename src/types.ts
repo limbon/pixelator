@@ -6,6 +6,7 @@ export type Tool = {
 		currentMousePos: number[],
 		color: string,
 		size: number,
-		lastMousePos?: number[],
+		lastMousePos: number[],
+		canvas: HTMLCanvasElement,
 	) => any;
 };

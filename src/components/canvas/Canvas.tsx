@@ -38,19 +38,20 @@ const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore' | 'palleteStore', P
 	}, [canvas.current]);
 
 	React.useEffect(() => {
-		if (mouseHold && renderer) {
+		if (mouseHold && renderer && canvas.current) {
 			const lastPos = toolStore.selectedTool.activate(
 				renderer,
 				currentMousePos,
 				palleteStore.primaryColor,
 				canvasStore.size,
 				lastMousePos,
+				canvas.current,
 			);
 			if (lastPos) {
 				setLastMousePos(lastPos);
 			}
 		}
-	}, [mouseHold, renderer, currentMousePos, lastMousePos, renderer]);
+	}, [canvas.current, mouseHold, renderer, currentMousePos, lastMousePos, renderer]);
 
 	const handleRightClick = React.useCallback(
 		({ clientX, clientY }: React.MouseEvent) => {

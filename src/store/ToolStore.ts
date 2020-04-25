@@ -1,9 +1,9 @@
 import { observable, action } from 'mobx';
 import { Tool } from '../types';
-import { pencil } from '../tools';
+import { pencil, bucket } from '../tools';
 
 export class ToolStore {
-	@observable tools: Tool[] = [pencil];
+	@observable tools: Tool[] = [pencil, bucket];
 	@observable selectedTool: Tool = this.tools[0];
 
 	@action
