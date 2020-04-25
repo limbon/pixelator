@@ -40,8 +40,12 @@ module.exports = {
 				use: [{ loader: 'style-loader' }, { loader: 'css-loader' }, { loader: 'sass-loader' }],
 			},
 			{
-				test: /(.svg|.png|.jpg|.jpeg|.webm)$/,
+				test: /(.png|.jpg|.jpeg|.webm)$/,
 				loader: 'file-loader',
+			},
+			{
+				test: /.svg$/,
+				loader: '@svgr/webpack',
 			},
 		],
 	},

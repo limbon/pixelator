@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { inject, WithStore } from '../../utils/mobxUtils';
 
-import arrow from './arrow.svg';
+import SwitchColor from './arrow.svg';
 
 import './Pallete.scss';
 
@@ -23,8 +23,7 @@ const Pallete: React.FC<WithStore<'palleteStore', Props>> = ({ palleteStore }) =
 	return (
 		<div className='pallete__container'>
 			<button onClick={swapColors}>
-				{/* TODO: Replace this wtih an actual svg */}
-				<img src={arrow} alt='arrow_icon' />
+				<SwitchColor width='32px' height='32px' viewBox='0 0 250 250' />
 			</button>
 			<div className='pallete'>
 				<div className={`pallete__color`}>
