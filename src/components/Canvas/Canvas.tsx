@@ -10,9 +10,10 @@ interface Props {
 	border?: boolean;
 }
 
-const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore' | 'palleteStore', Props>> = (
-	props,
-) => {
+const Canvas: React.FC<WithStore<
+	'toolStore' | 'canvasStore' | 'palleteStore' | 'artStore',
+	Props
+>> = (props) => {
 	const {
 		containerWidth,
 		containerHeight,
@@ -20,6 +21,7 @@ const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore' | 'palleteStore', P
 		toolStore,
 		canvasStore,
 		palleteStore,
+		artStore,
 	} = props;
 
 	const [mouseHold, setMouseHold] = React.useState<boolean>(false);
@@ -27,6 +29,13 @@ const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore' | 'palleteStore', P
 	const [lastMousePos, setLastMousePos] = React.useState<number[]>([0, 0]);
 
 	const canvas = React.useRef<HTMLCanvasElement>(null);
+
+	React.useEffect(() => {
+		if (canvas.current) {
+			canvasStore.mainContext.canvas = canvas.current;
+			canvasStore.mainContext.renderer = canvas.current.getContext('2d');
+		}
+	}, [canvas.current]);
 
 	React.useEffect(() => {
 		if (canvas.current) {
@@ -40,6 +49,33 @@ const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore' | 'palleteStore', P
 			canvasStore.mainContext.renderer = canvas.current.getContext('2d');
 		}
 	}, [canvas.current]);
+
+	React.useEffect(() => {
+		if (!artStore.arts.length) {
+			artStore.addArt({
+				name: 'new_art',
+				width: canvasStore.width,
+				height: canvasStore.height,
+				buffer: canvasStore.mainContext.renderer!.getImageData(
+					0,
+					0,
+					canvasStore.width,
+					canvasStore.height,
+				).data,
+				previewUrl: canvasStore.mainContext.canvas!.toDataURL(),
+			});
+			artStore.setArt(0);
+		}
+	}, []);
+
+	React.useEffect(() => {
+		const { width, height, buffer } = artStore.artiveArt!;
+		const imgData = canvasStore.mainContext.renderer!.createImageData(width, height);
+		for (let i = 0; i < buffer.length; i++) {
+			imgData.data[i] = buffer[i];
+		}
+		canvasStore.mainContext.renderer!.putImageData(imgData, 0, 0);
+	}, [artStore.artiveArt]);
 
 	React.useEffect(() => {
 		if (mouseHold && canvas.current) {
@@ -79,8 +115,18 @@ const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore' | 'palleteStore', P
 	);
 
 	const toggleMouseHold = React.useCallback(() => {
+		artStore.updateArt(artStore.activeIdx!, {
+			...artStore.artiveArt!,
+			buffer: canvasStore.mainContext.renderer!.getImageData(
+				0,
+				0,
+				canvasStore.width,
+				canvasStore.height,
+			).data,
+			previewUrl: canvasStore.mainContext.canvas!.toDataURL(),
+		});
 		setMouseHold(false);
-	}, [mouseHold]);
+	}, [mouseHold, artStore.activeIdx]);
 
 	return (
 		<div
@@ -107,4 +153,4 @@ Canvas.defaultProps = {
 	border: false,
 };
 
-export default inject(['toolStore', 'canvasStore', 'palleteStore'], Canvas);
+export default inject(['toolStore', 'canvasStore', 'palleteStore', 'artStore'], Canvas);

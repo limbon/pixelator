@@ -1,0 +1,22 @@
+.arts {
+	height: 512px;
+	overflow-y: auto;
+
+	&__list {
+		display: grid;
+		gap: 0.5rem;
+		margin-right: 1rem;
+
+		img {
+			width: 150px;
+			height: 150px;
+			border: 1px solid black;
+			image-rendering: pixelated;
+			image-rendering: -moz-crisp-edges;
+
+			&.active {
+				border-color: red;
+			}
+		}
+	}
+}
