@@ -10,3 +10,8 @@ export type Tool = {
 		canvas: HTMLCanvasElement,
 	) => any;
 };
+
+export type Context = {
+	canvas: HTMLCanvasElement | null;
+	renderer: CanvasRenderingContext2D | null;
+};

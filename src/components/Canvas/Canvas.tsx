@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useRenderer } from '../../hooks/useRenderer';
 import { screenToCanvas } from '../../utils/screenToCanvas';
 
 import './Canvas.scss';
@@ -26,7 +25,6 @@ const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore' | 'palleteStore', P
 	const [mouseHold, setMouseHold] = React.useState<boolean>(false);
 	const [currentMousePos, setCurrentMousePos] = React.useState<number[]>([0, 0]);
 	const [lastMousePos, setLastMousePos] = React.useState<number[]>([0, 0]);
-	const renderer = useRenderer();
 
 	const canvas = React.useRef<HTMLCanvasElement>(null);
 
@@ -36,11 +34,17 @@ const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore' | 'palleteStore', P
 			canvas.current.height = canvasStore.height;
 		}
 	}, [canvas.current]);
+	React.useEffect(() => {
+		if (canvas.current) {
+			canvasStore.mainContext.canvas = canvas.current;
+			canvasStore.mainContext.renderer = canvas.current.getContext('2d');
+		}
+	}, [canvas.current]);
 
 	React.useEffect(() => {
-		if (mouseHold && renderer && canvas.current) {
+		if (mouseHold && canvas.current) {
 			const lastPos = toolStore.selectedTool.activate(
-				renderer,
+				canvasStore.mainContext.renderer!,
 				currentMousePos,
 				palleteStore.primaryColor,
 				canvasStore.size,
@@ -51,17 +55,17 @@ const Canvas: React.FC<WithStore<'toolStore' | 'canvasStore' | 'palleteStore', P
 				setLastMousePos(lastPos);
 			}
 		}
-	}, [canvas.current, mouseHold, renderer, currentMousePos, lastMousePos, renderer]);
+	}, [canvas.current, mouseHold, currentMousePos, lastMousePos]);
 
 	const handleRightClick = React.useCallback(
 		({ clientX, clientY }: React.MouseEvent) => {
-			if (canvas.current && renderer) {
+			if (canvas.current) {
 				const [x, y] = screenToCanvas(clientX, clientY, canvas.current!);
 				setLastMousePos([x, y]);
 				setMouseHold(true);
 			}
 		},
-		[canvas.current, currentMousePos, renderer],
+		[canvas.current, currentMousePos],
 	);
 
 	const handleMouseMove = React.useCallback(
