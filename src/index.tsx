@@ -13,9 +13,9 @@ import './index.scss';
 
 import Canvas from './components/Canvas/Canvas';
 import ToolRack from './components/ToolRack/ToolRack';
-
 import Pallete from './components/Pallete/Pallete';
 import Arts from './components/Arts/Arts';
+import Controls from './components/Controls/Controls';
 
 const stores = {
 	toolStore: new ToolStore(),
@@ -30,25 +30,33 @@ ReactDOM.render(
 			style={{
 				height: '100vh',
 				display: 'grid',
-				gridAutoFlow: 'column',
-				alignItems: 'center',
+				alignContent: 'center',
 				justifyContent: 'center',
 				gap: '1rem',
 			}}
 		>
+			<Controls />
 			<div
 				style={{
-					height: '512px',
 					display: 'grid',
-					gridTemplateRows: '1fr auto',
+					gridAutoFlow: 'column',
 					gap: '1rem',
 				}}
 			>
-				<ToolRack />
-				<Pallete />
+				<div
+					style={{
+						height: '512px',
+						display: 'grid',
+						gridTemplateRows: '1fr auto',
+						gap: '1rem',
+					}}
+				>
+					<ToolRack />
+					<Pallete />
+				</div>
+				<Canvas border />
+				<Arts />
 			</div>
-			<Canvas border />
-			<Arts />
 		</div>
 	</Provider>,
 	document.querySelector('.root'),

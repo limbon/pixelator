@@ -69,7 +69,7 @@ const Canvas: React.FC<WithStore<
 			imgData.data[i] = buffer[i];
 		}
 		canvasStore.mainContext.renderer!.putImageData(imgData, 0, 0);
-	}, []);
+	}, [artStore.artiveArt]);
 
 	React.useEffect(() => {
 		if (mouseHold && canvas.current) {
