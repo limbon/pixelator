@@ -1,7 +1,9 @@
 export type Art = {
 	name: string;
 	buffer: Uint8ClampedArray;
-	preview: HTMLImageElement;
+	width: number;
+	height: number;
+	previewUrl: string;
 };
 
 export type Tool = {

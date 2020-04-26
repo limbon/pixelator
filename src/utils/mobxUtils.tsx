@@ -5,11 +5,13 @@ import { Provider as MobxProvider, observer, inject as mobxInject } from 'mobx-r
 import { ToolStore } from '../store/ToolStore';
 import { CanvasStore } from '../store/CanvasStore';
 import { PalleteStore } from '../store/PalleteStore';
+import { ArtStore } from '../store/ArtStore';
 
 export type Stores = {
 	toolStore: ToolStore;
 	canvasStore: CanvasStore;
 	palleteStore: PalleteStore;
+	artStore: ArtStore;
 };
 
 export const Provider: React.FC<{ stores?: Stores }> = ({ stores, children }) => {

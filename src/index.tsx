@@ -5,26 +5,27 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from './utils/mobxUtils';
 
 import { ToolStore } from './store/ToolStore';
+import { CanvasStore } from './store/CanvasStore';
+import { PalleteStore } from './store/PalleteStore';
+import { ArtStore } from './store/ArtStore';
 
 import './index.scss';
 
 import Canvas from './components/Canvas/Canvas';
 import ToolRack from './components/ToolRack/ToolRack';
 
-import { CanvasStore } from './store/CanvasStore';
-import { PalleteStore } from './store/PalleteStore';
-
 import Pallete from './components/Pallete/Pallete';
 import Arts from './components/Arts/Arts';
 
+const stores = {
+	toolStore: new ToolStore(),
+	canvasStore: new CanvasStore(),
+	palleteStore: new PalleteStore(),
+	artStore: new ArtStore(),
+};
+
 ReactDOM.render(
-	<Provider
-		stores={{
-			toolStore: new ToolStore(),
-			canvasStore: new CanvasStore(),
-			palleteStore: new PalleteStore(),
-		}}
-	>
+	<Provider stores={stores}>
 		<div
 			style={{
 				height: '100vh',
@@ -47,9 +48,7 @@ ReactDOM.render(
 				<Pallete />
 			</div>
 			<Canvas border />
-			<div>
-				<Arts />
-			</div>
+			<Arts />
 		</div>
 	</Provider>,
 	document.querySelector('.root'),
