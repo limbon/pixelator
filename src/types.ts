@@ -1,3 +1,9 @@
+export type Art = {
+	name: string;
+	buffer: Uint8ClampedArray;
+	preview: HTMLImageElement;
+};
+
 export type Tool = {
 	name: string;
 	icon?: string;

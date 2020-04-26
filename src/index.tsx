@@ -8,13 +8,14 @@ import { ToolStore } from './store/ToolStore';
 
 import './index.scss';
 
-import Canvas from './components/canvas/Canvas';
+import Canvas from './components/Canvas/Canvas';
 import ToolRack from './components/ToolRack/ToolRack';
 
 import { CanvasStore } from './store/CanvasStore';
 import { PalleteStore } from './store/PalleteStore';
 
 import Pallete from './components/Pallete/Pallete';
+import Arts from './components/Arts/Arts';
 
 ReactDOM.render(
 	<Provider
@@ -46,6 +47,9 @@ ReactDOM.render(
 				<Pallete />
 			</div>
 			<Canvas border />
+			<div>
+				<Arts />
+			</div>
 		</div>
 	</Provider>,
 	document.querySelector('.root'),
