@@ -1,4 +1,5 @@
 import 'mobx-react-lite/batchingForReactDom';
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
@@ -17,11 +18,16 @@ import Pallete from './components/Pallete/Pallete';
 import Arts from './components/Arts/Arts';
 import Controls from './components/Controls/Controls';
 
+const artStore = new ArtStore();
+const canvasStore = new CanvasStore(artStore);
+const toolStore = new ToolStore();
+const palleteStore = new PalleteStore();
+
 const stores = {
-	toolStore: new ToolStore(),
-	canvasStore: new CanvasStore(),
-	palleteStore: new PalleteStore(),
-	artStore: new ArtStore(),
+	toolStore,
+	canvasStore,
+	palleteStore,
+	artStore,
 };
 
 ReactDOM.render(

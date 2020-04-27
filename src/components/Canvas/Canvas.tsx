@@ -42,13 +42,7 @@ const Canvas: React.FC<WithStore<
 			canvas.current.width = canvasStore.width;
 			canvas.current.height = canvasStore.height;
 		}
-	}, [canvas.current]);
-	React.useEffect(() => {
-		if (canvas.current) {
-			canvasStore.mainContext.canvas = canvas.current;
-			canvasStore.mainContext.renderer = canvas.current.getContext('2d');
-		}
-	}, [canvas.current]);
+	}, [canvas.current, canvasStore.width, canvasStore.height]);
 
 	React.useEffect(() => {
 		if (!artStore.arts.length) {
@@ -69,13 +63,13 @@ const Canvas: React.FC<WithStore<
 	}, []);
 
 	React.useEffect(() => {
-		const { width, height, buffer } = artStore.artiveArt!;
+		const { width, height, buffer } = artStore.activeArt!;
 		const imgData = canvasStore.mainContext.renderer!.createImageData(width, height);
 		for (let i = 0; i < buffer.length; i++) {
 			imgData.data[i] = buffer[i];
 		}
 		canvasStore.mainContext.renderer!.putImageData(imgData, 0, 0);
-	}, [artStore.artiveArt]);
+	}, [artStore.activeArt]);
 
 	React.useEffect(() => {
 		if (mouseHold && canvas.current) {
@@ -116,7 +110,7 @@ const Canvas: React.FC<WithStore<
 
 	const toggleMouseHold = React.useCallback(() => {
 		artStore.updateArt(artStore.activeIdx!, {
-			...artStore.artiveArt!,
+			...artStore.activeArt!,
 			buffer: canvasStore.mainContext.renderer!.getImageData(
 				0,
 				0,
