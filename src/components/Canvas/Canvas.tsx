@@ -1,28 +1,15 @@
 import * as React from 'react';
 import { screenToCanvas } from '../../utils/screenToCanvas';
-
-import './Canvas.scss';
 import { inject, WithStore } from '../../utils/mobxUtils';
 
-interface Props {
-	containerWidth?: number;
-	containerHeight?: number;
-	border?: boolean;
-}
+import './Canvas.scss';
 
-const Canvas: React.FC<WithStore<
-	'toolStore' | 'canvasStore' | 'palleteStore' | 'artStore',
-	Props
->> = (props) => {
-	const {
-		containerWidth,
-		containerHeight,
-		border,
-		toolStore,
-		canvasStore,
-		palleteStore,
-		artStore,
-	} = props;
+interface Props {}
+
+type Stores = 'toolStore' | 'canvasStore' | 'palleteStore' | 'artStore';
+
+const Canvas: React.FC<WithStore<Stores, Props>> = (props) => {
+	const { toolStore, canvasStore, palleteStore, artStore } = props;
 
 	const [mouseHold, setMouseHold] = React.useState<boolean>(false);
 	const [currentMousePos, setCurrentMousePos] = React.useState<number[]>([0, 0]);
@@ -39,24 +26,23 @@ const Canvas: React.FC<WithStore<
 
 	React.useEffect(() => {
 		if (canvas.current) {
-			canvas.current.width = canvasStore.width;
-			canvas.current.height = canvasStore.height;
+			const { width, height } = canvasStore;
+
+			canvas.current.width = width;
+			canvas.current.height = height;
 		}
 	}, [canvas.current, canvasStore.width, canvasStore.height]);
 
 	React.useEffect(() => {
+		const { width, height, mainContext } = canvasStore;
+
 		if (!artStore.arts.length) {
 			artStore.addArt({
 				name: 'new_art',
-				width: canvasStore.width,
-				height: canvasStore.height,
-				buffer: canvasStore.mainContext.renderer!.getImageData(
-					0,
-					0,
-					canvasStore.width,
-					canvasStore.height,
-				).data,
-				previewUrl: canvasStore.mainContext.canvas!.toDataURL(),
+				width: width,
+				height: height,
+				buffer: mainContext.renderer!.getImageData(0, 0, width, height).data,
+				previewUrl: mainContext.canvas!.toDataURL(),
 			});
 			artStore.setArt(0);
 		}
@@ -64,28 +50,32 @@ const Canvas: React.FC<WithStore<
 
 	React.useEffect(() => {
 		const { width, height, buffer } = artStore.activeArt!;
-		const imgData = canvasStore.mainContext.renderer!.createImageData(width, height);
+		const { mainContext } = canvasStore;
+
+		const imgData = mainContext.renderer!.createImageData(width, height);
 		for (let i = 0; i < buffer.length; i++) {
 			imgData.data[i] = buffer[i];
 		}
-		canvasStore.mainContext.renderer!.putImageData(imgData, 0, 0);
+		mainContext.renderer!.putImageData(imgData, 0, 0);
 	}, [artStore.activeArt]);
 
 	React.useEffect(() => {
-		if (mouseHold && canvas.current) {
-			const lastPos = toolStore.selectedTool.activate(
-				canvasStore.mainContext.renderer!,
+		const { mainContext, pixelSize } = canvasStore;
+		const { primaryColor } = palleteStore;
+
+		if (mouseHold && mainContext.canvas) {
+			const prevPos = toolStore.selectedTool.activate(
+				mainContext.renderer!,
 				currentMousePos,
-				palleteStore.primaryColor,
-				canvasStore.size,
+				primaryColor,
+				pixelSize,
 				lastMousePos,
-				canvas.current,
+				mainContext.canvas!,
 			);
-			if (lastPos) {
-				setLastMousePos(lastPos);
-			}
+
+			if (prevPos) setLastMousePos(prevPos);
 		}
-	}, [canvas.current, mouseHold, currentMousePos, lastMousePos]);
+	}, [canvasStore.mainContext.canvas, mouseHold, currentMousePos]);
 
 	const handleRightClick = React.useCallback(
 		({ clientX, clientY }: React.MouseEvent) => {
@@ -108,43 +98,28 @@ const Canvas: React.FC<WithStore<
 		[canvas.current],
 	);
 
-	const toggleMouseHold = React.useCallback(() => {
+	const handleMouseUp = React.useCallback(() => {
+		const { width, height, mainContext } = canvasStore;
+
 		artStore.updateArt(artStore.activeIdx!, {
 			...artStore.activeArt!,
-			buffer: canvasStore.mainContext.renderer!.getImageData(
-				0,
-				0,
-				canvasStore.width,
-				canvasStore.height,
-			).data,
-			previewUrl: canvasStore.mainContext.canvas!.toDataURL(),
+			buffer: mainContext.renderer!.getImageData(0, 0, width, height).data,
+			previewUrl: mainContext.canvas!.toDataURL(),
 		});
+
 		setMouseHold(false);
 	}, [mouseHold, artStore.activeIdx]);
 
 	return (
-		<div
-			style={{
-				width: containerWidth,
-				height: containerHeight,
-				border: border ? '2px solid black' : 0,
-			}}
-			className='canvas-container'
-		>
+		<div className='canvas-container'>
 			<canvas
 				ref={canvas}
 				onMouseMove={handleMouseMove}
-				onMouseUp={toggleMouseHold}
+				onMouseUp={handleMouseUp}
 				onMouseDown={handleRightClick}
 			></canvas>
 		</div>
 	);
-};
-
-Canvas.defaultProps = {
-	containerWidth: 512,
-	containerHeight: 512,
-	border: false,
 };
 
 export default inject(['toolStore', 'canvasStore', 'palleteStore', 'artStore'], Canvas);

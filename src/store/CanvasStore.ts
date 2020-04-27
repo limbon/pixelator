@@ -10,7 +10,7 @@ export class CanvasStore {
 		renderer: null,
 	};
 	@observable color: string = '#000000';
-	@observable size: number = 1;
+	@observable pixelSize: number = 1;
 
 	@computed get width() {
 		return this.artStore.activeArt?.width || 32;

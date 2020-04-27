@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { WithStore, inject } from '../../utils/mobxUtils';
 
 import './ToolRack.scss';

@@ -12,11 +12,7 @@ import { ArtStore } from './store/ArtStore';
 
 import './index.scss';
 
-import Canvas from './components/Canvas/Canvas';
-import ToolRack from './components/ToolRack/ToolRack';
-import Pallete from './components/Pallete/Pallete';
-import Arts from './components/Arts/Arts';
-import Controls from './components/Controls/Controls';
+import App from './App';
 
 const artStore = new ArtStore();
 const canvasStore = new CanvasStore(artStore);
@@ -32,38 +28,7 @@ const stores = {
 
 ReactDOM.render(
 	<Provider stores={stores}>
-		<div
-			style={{
-				height: '100vh',
-				display: 'grid',
-				alignContent: 'center',
-				justifyContent: 'center',
-				gap: '1rem',
-			}}
-		>
-			<Controls />
-			<div
-				style={{
-					display: 'grid',
-					gridAutoFlow: 'column',
-					gap: '1rem',
-				}}
-			>
-				<div
-					style={{
-						height: '512px',
-						display: 'grid',
-						gridTemplateRows: '1fr auto',
-						gap: '1rem',
-					}}
-				>
-					<ToolRack />
-					<Pallete />
-				</div>
-				<Canvas border />
-				<Arts />
-			</div>
-		</div>
+		<App />
 	</Provider>,
 	document.querySelector('.root'),
 );
