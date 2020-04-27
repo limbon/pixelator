@@ -16,7 +16,12 @@ export class ArtStore {
 
 	@action
 	deleteArt(idx: number) {
-		this.arts = this.arts.filter((_, i) => i !== idx);
+		if (this.arts.length > 1) {
+			if (this.activeIdx !== null && this.activeIdx > 0) {
+				this.setArt(this.activeIdx - 1);
+			}
+			this.arts = this.arts.filter((_, i) => i !== idx);
+		}
 	}
 
 	@action

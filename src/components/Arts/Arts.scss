@@ -6,16 +6,47 @@
 		display: grid;
 		gap: 0.5rem;
 		margin-right: 1rem;
+		padding: 0;
+		list-style: none;
 
-		img {
-			width: 150px;
-			height: 150px;
-			border: 1px solid black;
-			image-rendering: pixelated;
-			image-rendering: -moz-crisp-edges;
+		li {
+			position: relative;
+			display: grid;
 
-			&.active {
-				border-color: red;
+			button {
+				position: absolute;
+				top: -10%;
+				right: -10%;
+				width: 24px;
+				height: 24px;
+				color: white;
+				font-weight: bold;
+				background: red;
+				padding: 2px;
+				border: 0;
+				border-radius: 50%;
+				outline: none;
+				cursor: pointer;
+
+				&:active {
+					transform: scale(0.95);
+				}
+
+				&::-moz-focus-inner {
+					border: 0;
+				}
+			}
+
+			img {
+				width: 150px;
+				height: 150px;
+				border: 1px solid black;
+				image-rendering: pixelated;
+				image-rendering: -moz-crisp-edges;
+
+				&.active {
+					border-color: red;
+				}
 			}
 		}
 	}

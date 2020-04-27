@@ -8,17 +8,19 @@ interface Props {}
 const Arts: React.FC<WithStore<'artStore', Props>> = ({ artStore }) => {
 	return (
 		<div className='arts'>
-			<div className='arts__list'>
+			<ol className='arts__list'>
 				{artStore.arts.map(({ previewUrl }, idx) => (
-					<img
-						// TODO: Remove index as key
-						key={idx}
-						className={`${idx === artStore.activeIdx ? 'active' : ''}`}
-						onClick={() => artStore.setArt(idx)}
-						src={previewUrl}
-					/>
+					<li key={idx}>
+						<button onClick={() => artStore.deleteArt(idx)}>X</button>
+						<img
+							// TODO: Remove index as key
+							className={`${idx === artStore.activeIdx ? 'active' : ''}`}
+							onClick={() => artStore.setArt(idx)}
+							src={previewUrl}
+						/>
+					</li>
 				))}
-			</div>
+			</ol>
 		</div>
 	);
 };
