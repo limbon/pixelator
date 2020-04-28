@@ -9,7 +9,7 @@ const Arts: React.FC<WithStore<'artStore', Props>> = ({ artStore }) => {
 	return (
 		<div className='arts'>
 			<ol className='arts__list'>
-				{artStore.arts.map(({ previewUrl }, idx) => (
+				{artStore.arts.map(({ previewUrl, name }, idx) => (
 					<li key={idx}>
 						<button onClick={() => artStore.deleteArt(idx)}>X</button>
 						<img
@@ -18,6 +18,7 @@ const Arts: React.FC<WithStore<'artStore', Props>> = ({ artStore }) => {
 							onClick={() => artStore.setArt(idx)}
 							src={previewUrl}
 						/>
+						<span>{name}</span>
 					</li>
 				))}
 			</ol>

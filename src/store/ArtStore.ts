@@ -10,7 +10,7 @@ export class ArtStore {
 	}
 
 	@action
-	createArtFromDataUrl(dataUrl: string) {
+	createArtFromDataUrl(dataUrl: string, name?: string) {
 		let image = new Image();
 		image.src = dataUrl;
 		image.onload = () => {
@@ -22,7 +22,7 @@ export class ArtStore {
 			const imgData = renderer.getImageData(0, 0, canvas.width, canvas.height);
 
 			const art: Art = {
-				name: `new_art_${this.arts.length + 1}`,
+				name: name || `new_art_${this.arts.length + 1}`,
 				width: canvas.width,
 				height: canvas.height,
 				buffer: imgData!.data,

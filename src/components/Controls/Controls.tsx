@@ -7,6 +7,7 @@ import './Controls.scss';
 interface Props {}
 
 const Controls: React.FC<WithStore<'artStore' | 'canvasStore', Props>> = (props) => {
+	const [importedFile, setImportedFile] = React.useState<File>();
 	const [reader] = React.useState<FileReader>(new FileReader());
 
 	const { artStore, canvasStore } = props;
@@ -14,15 +15,21 @@ const Controls: React.FC<WithStore<'artStore' | 'canvasStore', Props>> = (props)
 	React.useEffect(() => {
 		reader.onload = (evt) => {
 			let dataUrl = evt.target?.result as string;
-			artStore.createArtFromDataUrl(dataUrl);
+			artStore.createArtFromDataUrl(dataUrl, importedFile?.name);
 		};
-	}, [reader]);
+	}, [reader, importedFile]);
+
+	React.useEffect(() => {
+		if (importedFile) {
+			reader.readAsDataURL(new Blob([importedFile]));
+		}
+	}, [importedFile]);
 
 	const readFile = React.useCallback(
 		(evt: React.ChangeEvent<HTMLInputElement>) => {
 			if (evt.target.files) {
 				const file = evt.target.files[0];
-				reader.readAsDataURL(new Blob([file]));
+				setImportedFile(file);
 			}
 		},
 		[reader],
