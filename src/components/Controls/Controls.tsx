@@ -41,10 +41,21 @@ const Controls: React.FC<WithStore<'artStore' | 'canvasStore', Props>> = (props)
 		artStore.addArt(art);
 	}, []);
 
+	const exportArt = React.useCallback(() => {
+		const { mainContext } = canvasStore;
+		const { activeArt } = artStore;
+		const link = document.createElement('a');
+		link.setAttribute('href', mainContext.canvas!.toDataURL());
+		link.setAttribute('download', activeArt!.name);
+		link.click();
+		document.removeChild(link);
+	}, []);
+
 	return (
 		<div className='controls'>
 			<button onClick={addNewArt}>New Art</button>
 			<input onChange={readFile} type='file' accept='.png' />
+			<button onClick={exportArt}>Export</button>
 		</div>
 	);
 };
