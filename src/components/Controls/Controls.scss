@@ -1,10 +1,68 @@
+@import '../../variables';
+
 .controls {
+	background-color: #3a3a3a;
 	display: grid;
 	grid-auto-columns: 128px;
 	grid-auto-flow: column;
 	gap: 1rem;
 	padding: 1rem;
-	border: 2px solid black;
+	border: 2px solid $color-primary;
 
-	// TODO: Add button styling
+	button {
+		color: $color-primary;
+		text-transform: uppercase;
+		font-size: 18px;
+		letter-spacing: 3px;
+		background-color: transparent;
+		padding: 0.5rem 0;
+		border: 0;
+		border: 2px solid $color-primary;
+		outline-color: none;
+		cursor: pointer;
+
+		&::-moz-focus-inner {
+			border: 0;
+		}
+
+		&:hover {
+			box-shadow: 0 0 1rem -0.1rem $color-primary;
+		}
+	}
+
+	.file-button {
+		overflow: hidden;
+		position: relative;
+		color: $color-primary;
+		font-size: 18px;
+		text-transform: uppercase;
+		font-size: 18px;
+		letter-spacing: 3px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border: 2px solid $color-primary;
+		cursor: pointer;
+
+		&::-moz-focus-inner {
+			border: 0;
+		}
+
+		&:hover {
+			box-shadow: 0 0 1rem -0.1rem $color-primary;
+		}
+
+		input {
+			position: absolute;
+			right: 0;
+			top: 0;
+			min-height: 100%;
+			min-width: 100%;
+			display: block;
+			opacity: 0;
+			text-align: right;
+			filter: alpha(opacity=0);
+			cursor: inherit;
+		}
+	}
 }

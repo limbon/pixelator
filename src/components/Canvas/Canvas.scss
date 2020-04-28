@@ -1,7 +1,13 @@
+@import '../../variables';
+
 .canvas-container {
-	width: 512px;
-	height: 512px;
-	border: 2px solid black;
+	width: 768px;
+	height: 768px;
+	// TODO: Replace it with dynamic transparency placeholder image
+	background-image: url('./transparent_bg.png');
+	background-position: center;
+	background-size: contain;
+	border: 2px solid $color-primary;
 
 	canvas {
 		width: 100%;

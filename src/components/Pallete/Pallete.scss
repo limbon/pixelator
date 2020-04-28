@@ -1,31 +1,38 @@
+@import '../../variables';
+
 $pallete-color-size: 64px;
 
 .pallete__container {
 	position: relative;
 	height: $pallete-color-size + 48px;
+	background-color: #3a3a3a;
 	display: grid;
 	align-items: center;
 	justify-items: center;
-	border: 2px solid black;
+	border: 2px solid $color-primary;
 
 	button {
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
 		position: absolute;
-		bottom: 15%;
+		bottom: 14%;
 		left: 23%;
 		height: 32px;
 		width: 32px;
-		background-color: none;
+		background-color: transparent;
 		padding: 0;
 		border: 0;
 		outline: 0;
 		cursor: pointer;
 
+		svg {
+			fill: #a3a3a3;
+		}
+
 		&:hover {
 			svg {
-				fill: grey;
+				fill: $color-primary;
 			}
 		}
 
@@ -42,6 +49,9 @@ $pallete-color-size: 64px;
 		&__color {
 			width: $pallete-color-size;
 			height: $pallete-color-size;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 
 			input {
 				-webkit-appearance: none;
@@ -50,11 +60,12 @@ $pallete-color-size: 64px;
 				width: 100%;
 				height: 100%;
 				padding: 0;
+				border: 0;
 				cursor: pointer;
-			}
 
-			&.active {
-				background-color: lightgray;
+				&::-moz-focus-inner {
+					border: 0;
+				}
 			}
 		}
 

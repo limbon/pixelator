@@ -61,7 +61,10 @@ const Controls: React.FC<WithStore<'artStore' | 'canvasStore', Props>> = (props)
 	return (
 		<div className='controls'>
 			<button onClick={addNewArt}>New Art</button>
-			<input onChange={readFile} type='file' accept='.png' />
+			<div className='file-button'>
+				<label>Import</label>
+				<input onChange={readFile} type='file' accept='.png' />
+			</div>
 			<button onClick={exportArt}>Export</button>
 		</div>
 	);

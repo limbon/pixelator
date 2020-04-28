@@ -1,29 +1,28 @@
+@import '../../variables';
+
 $tool-height: 64px;
 
 .toolrack {
 	height: 100%;
 	display: grid;
 	grid-template-columns: repeat(2, $tool-height);
+	background-color: #3a3a3a;
 	gap: 1rem;
 	padding: 1rem;
-	border: 2px solid black;
+	border: 2px solid $color-primary;
 
 	&__tool {
 		width: 100%;
 		height: $tool-height;
+		color: $color-primary;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		border: 2px solid black;
+		border: 2px solid $color-primary;
 		cursor: pointer;
 
-		&:not(.active):hover {
-			background-color: lightgrey;
-		}
-
 		&.active {
-			background-color: grey;
-			color: white;
+			box-shadow: 0 0 1rem -0.1rem $color-primary;
 		}
 	}
 }

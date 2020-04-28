@@ -1,35 +1,16 @@
 import * as React from 'react';
 import { Canvas, Arts, Pallete, ToolRack, Controls } from './components';
 
+import './App.scss';
+
 interface Props {}
 
 const App: React.FC<Props> = () => {
 	return (
-		<div
-			style={{
-				height: '100vh',
-				display: 'grid',
-				alignContent: 'center',
-				justifyContent: 'center',
-				gap: '1rem',
-			}}
-		>
+		<div className='outer'>
 			<Controls />
-			<div
-				style={{
-					display: 'grid',
-					gridAutoFlow: 'column',
-					gap: '1rem',
-				}}
-			>
-				<div
-					style={{
-						height: '512px',
-						display: 'grid',
-						gridTemplateRows: '1fr auto',
-						gap: '1rem',
-					}}
-				>
+			<div className='inner'>
+				<div className='tools'>
 					<ToolRack />
 					<Pallete />
 				</div>

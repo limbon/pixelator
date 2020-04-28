@@ -3,7 +3,7 @@ import { makeColor } from '../utils/makeColor';
 
 export class PalleteStore {
 	@observable primaryColor = makeColor(0, 0, 0, 255);
-	@observable secondaryColor = makeColor(255, 0, 0, 255);
+	@observable secondaryColor = makeColor(255, 255, 255, 255);
 
 	@action
 	swapColors() {
