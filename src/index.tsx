@@ -1,34 +1,23 @@
-import 'mobx-react-lite/batchingForReactDom';
+import "mobx-react-lite/batchingForReactDom";
+import "reflect-metadata";
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
-import { Provider } from './utils/mobxUtils';
+import { Provider } from "./utils/mobxUtils";
 
-import { ToolStore } from './store/ToolStore';
-import { CanvasStore } from './store/CanvasStore';
-import { PalleteStore } from './store/PalleteStore';
-import { ArtStore } from './store/ArtStore';
+import { ToolStore } from "./store/ToolStore";
+import { CanvasStore } from "./store/CanvasStore";
+import { PalleteStore } from "./store/PalleteStore";
+import { ArtStore } from "./store/ArtStore";
 
-import './index.scss';
+import "./index.scss";
 
-import App from './App';
-
-const artStore = new ArtStore();
-const canvasStore = new CanvasStore(artStore);
-const toolStore = new ToolStore();
-const palleteStore = new PalleteStore();
-
-const stores = {
-	toolStore,
-	canvasStore,
-	palleteStore,
-	artStore,
-};
+import App from "./App";
 
 ReactDOM.render(
-	<Provider stores={stores}>
-		<App />
-	</Provider>,
-	document.querySelector('.root'),
+  <Provider stores={[ToolStore, CanvasStore, PalleteStore, ArtStore]}>
+    <App />
+  </Provider>,
+  document.querySelector(".root")
 );

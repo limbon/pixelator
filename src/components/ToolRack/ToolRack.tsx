@@ -1,24 +1,30 @@
-import * as React from 'react';
-import { WithStore, inject } from '../../utils/mobxUtils';
+import { observer } from "mobx-react";
+import * as React from "react";
+import { useStore } from "../../hooks";
+import { ToolStore } from "../../store/ToolStore";
 
-import './ToolRack.scss';
+import "./ToolRack.scss";
 
 interface Props {}
 
-const ToolRack: React.FC<WithStore<'toolStore', Props>> = ({ toolStore }) => {
-	return (
-		<div className='toolrack'>
-			{toolStore.tools.map(({ name }, idx) => (
-				<div
-					className={`toolrack__tool ${toolStore.selectedTool.name === name ? 'active' : ''}`}
-					key={name}
-					onClick={() => toolStore.select(idx)}
-				>
-					<h1>{name.charAt(0)}</h1>
-				</div>
-			))}
-		</div>
-	);
+const ToolRack: React.FC<Props> = () => {
+  const toolStore = useStore(ToolStore);
+
+  return (
+    <div className="toolrack">
+      {toolStore.tools.map(({ name }, idx) => (
+        <div
+          className={`toolrack__tool ${
+            toolStore.selectedTool.name === name ? "active" : ""
+          }`}
+          key={name}
+          onClick={() => toolStore.select(idx)}
+        >
+          <h1>{name.charAt(0)}</h1>
+        </div>
+      ))}
+    </div>
+  );
 };
 
-export default inject(['toolStore'], ToolRack);
+export default observer(ToolRack);

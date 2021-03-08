@@ -1,27 +1,21 @@
-import * as React from 'react';
-import { IReactComponent } from 'mobx-react/dist/types/IReactComponent';
-import { Provider as MobxProvider, observer, inject as mobxInject } from 'mobx-react';
+import * as React from "react";
+import { Provider as MobxProvider } from "mobx-react";
+import { Container } from "typedi";
 
-import { ToolStore } from '../store/ToolStore';
-import { CanvasStore } from '../store/CanvasStore';
-import { PalleteStore } from '../store/PalleteStore';
-import { ArtStore } from '../store/ArtStore';
+import { Type } from "../types";
 
-export type Stores = {
-	toolStore: ToolStore;
-	canvasStore: CanvasStore;
-	palleteStore: PalleteStore;
-	artStore: ArtStore;
-};
+export const Provider: React.FC<{ stores?: Type<any>[] }> = ({
+  stores,
+  children,
+}) => {
+  const storeMap = React.useMemo(
+    () =>
+      stores?.reduce(
+        (acc, store) => ({ ...acc, [store.name]: Container.get(store) }),
+        {}
+      ),
+    []
+  );
 
-export const Provider: React.FC<{ stores?: Stores }> = ({ stores, children }) => {
-	return <MobxProvider {...stores}>{children}</MobxProvider>;
-};
-
-export type StoreName = keyof Stores;
-
-export type WithStore<K extends StoreName, P> = P & Pick<Stores, K>;
-
-export const inject = (names: StoreName[], component: IReactComponent) => {
-	return mobxInject(...names)(observer(component));
+  return <MobxProvider {...storeMap}>{children}</MobxProvider>;
 };
